@@ -1,0 +1,7 @@
+/*W3Cfuns.com CSS Document */
+
+body,div,p,ul,li,dl,dt,dd,h1,a{margin:0; padding:0;}
+html{background:url(../images/bg.gif) repeat-x;}
+body{background:url(../images/clouds.gif) repeat-x;}
+
+#header,#banner,#content,#footer{width:400px;  margin:0 auto;}

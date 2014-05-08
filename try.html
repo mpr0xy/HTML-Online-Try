@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="lib/codemirror.css">
+    <link rel="stylesheet" href="theme/monokai.css">
+    <script src="lib/codemirror.js"></script>
+    <script src="mode/htmlmixed/htmlmixed.js"></script>
+    <script src="mode/xml/xml.js"></script>
+    <script src="mode/javascript/javascript.js"></script>
+    <script src="mode/css/css.js"></script>
+    <script src="mode/vbscript/vbscript.js"></script>
+    <script src="mode/htmlmixed/htmlmixed.js"></script>
+    <style type="text/css">
+    body,div{margin:0; padding:0;}
+    #codediv,#result{
+      float:left;
+      border: 1px solid gray;
+      width: 48%;
+      height: 1000px;
+      margin: 0 10px; 
+    }
+    .CodeMirror {
+      border: 1px solid #eee;
+      width: 100%;
+      height: 1000px;
+    }
+    .main {
+      margin:10px auto;
+      overflow:hidden;
+    }
+    </style>
+  </head>
+  <body>
+  <div class="main">
+    <div id="codediv">
+      <form action="/index.php" method="post" id="tryitform" name="tryitform" target="i">
+        <input type="hidden" id="code" name="code"  />
+      </from>
+      <codetext>
+      </codetext>
+    </div>
+    <div id="result">
+      <iframe frameborder="0" name="i" width="650px" height="1000px"></iframe>
+    </div>
+  </div>
+  <script>
+    function submitTryit(editor){
+      //var htmlcode=document.getElementById("codetext").value;
+      var htmlcode=editor.doc.getValue();
+      htmlcode.replace(/\r\n/g,'');
+      // window.frames["i"].document.documentElement.innerHTML = htmlcode;
+      window.frames["i"].document.write(htmlcode);
+      window.frames["i"].document.close();
+    }
+    
+    
+    // Define an extended mixed-mode that understands vbscript and
+    // leaves mustache/handlebars embedded templates in html mode
+    var mixedMode = {
+      name: "htmlmixed",
+      scriptTypes: [{matches: /\/x-handlebars-template|\/x-mustache/i,
+                     mode: null},
+                    {matches: /(text|application)\/(x-)?vb(a|script)/i,
+                     mode: "vbscript"}]
+    };
+    var editor = CodeMirror(document.getElementsByTagName("codetext")[0], {mode: mixedMode,
+      theme: "monokai",
+      lineNumbers: true,
+    });
+    editor.on('change', function(cm){
+      submitTryit(cm);
+    });
+  </script>
+  </body>
+
+</html>
